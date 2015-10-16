@@ -17,7 +17,7 @@ namespace Kinect.Replay.Replay
 		public event Action<ReplayAllFramesReadyEventArgs> AllFramesReady;
 		public event Action ReplayFinished;
 
-		public CoordinateMapper CoordinateMapper { get; private set; }
+        //public CoordinateMapper CoordinateMapper { get; private set; }
 
 		private ReplayAllFramesSystem framesReplay;
 		public KinectRecordOptions Options { get; private set; }
@@ -27,6 +27,16 @@ namespace Kinect.Replay.Replay
 
 		public bool IsFinished { get { return framesReplay == null || framesReplay.IsFinished; } }
 
+        public void setPauseMode(Boolean mode) {
+            framesReplay.IsPause = mode;
+        }
+
+        public void nextFrame()
+        {
+            framesReplay.nextFrame();
+        }
+
+
 		public KinectReplay(string fileName)
 		{
 			stream = File.OpenRead(fileName);
@@ -35,9 +45,9 @@ namespace Kinect.Replay.Replay
 			synchronizationContext = SynchronizationContext.Current;
 
 			Options = (KinectRecordOptions)reader.ReadInt32();
-			var paramsArrayLength = reader.ReadInt32();
-			var colorToDepthRelationalParameters = reader.ReadBytes(paramsArrayLength);
-			CoordinateMapper = new CoordinateMapper(colorToDepthRelationalParameters);
+            //var paramsArrayLength = reader.ReadInt32();
+            //var colorToDepthRelationalParameters = reader.ReadBytes(paramsArrayLength);
+            //CoordinateMapper = new CoordinateMapper(colorToDepthRelationalParameters);
 
 			if ((Options & KinectRecordOptions.Frames) != 0)
 			{

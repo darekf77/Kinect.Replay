@@ -48,6 +48,7 @@ namespace Kinect.Replay.Record
 			IsRunning = true;
 			recordingStartTime = DateTime.Now;
 			workingThread = new Thread(RecordAudio) { IsBackground = true };
+            workingThread.IsBackground = true;
 			workingThread.Start();
 		}
 

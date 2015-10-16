@@ -23,22 +23,26 @@ namespace Kinect.Replay.Record
 
 		public KinectRecorder(KinectRecordOptions options, string targetFileName, KinectSensor sensor)
 		{
+            Console.WriteLine("START!!");
 			Options = options;
 			recordFileName = targetFileName;
 			_sensor = sensor;
 			var stream = File.Create(targetFileName);
+            Console.WriteLine("Stream created");
 			recordStream = stream;
 			writer = new BinaryWriter(recordStream);
 
 			writer.Write((int)Options);
-			var colorToDepthRelationalParameters = sensor.CoordinateMapper.ColorToDepthRelationalParameters.ToArray();
-			writer.Write(colorToDepthRelationalParameters.Length);
-			writer.Write(colorToDepthRelationalParameters);
+            Console.WriteLine("before arr");
+            //var colorToDepthRelationalParameters = sensor.CoordinateMapper.ColorToDepthRelationalParameters.ToArray();
+            //writer.Write(colorToDepthRelationalParameters.Length);
+            //writer.Write(colorToDepthRelationalParameters);
+            Console.WriteLine("shit after");
 
 			if ((Options & KinectRecordOptions.Frames) != 0)
 			{
 				colorRecoder = new ColorRecorder(writer);
-				depthRecorder = new DepthRecorder(writer);
+				depthRecorder = new DepthRecorder(writer,sensor);
 				skeletonRecorder = new SkeletonRecorder(writer);
 			}
 
@@ -46,16 +50,17 @@ namespace Kinect.Replay.Record
 				audioRecorder = new AudioRecorder();
 
 			previousFlushDate = DateTime.Now;
+            Console.WriteLine("recording!");
 		}
 
-		public void Record(SkeletonFrame frame)
+		public void Record(SkeletonFrame frame,KinectSensor psensor)
 		{
 			if (skeletonRecorder == null)
 				return;
 			if (writer == null)
 				throw new Exception("This recorder is stopped");
 
-			skeletonRecorder.Record(frame);
+            skeletonRecorder.Record(frame, psensor);
 			Flush();
 		}
 
@@ -109,6 +114,7 @@ namespace Kinect.Replay.Record
 
 			writer.Close();
 			writer.Dispose();
+
 
 			recordStream.Dispose();
 			recordStream = null;

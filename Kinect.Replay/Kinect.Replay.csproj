@@ -30,7 +30,7 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="Microsoft.Kinect, Version=1.6.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL" />
+    <Reference Include="Microsoft.Kinect, Version=1.8.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL" />
     <Reference Include="System" />
     <Reference Include="System.Core" />
     <Reference Include="System.Xml.Linq" />
@@ -46,6 +46,7 @@
     <Compile Include="Record\ColorRecorder.cs" />
     <Compile Include="Record\DepthRecorder.cs" />
     <Compile Include="Record\FrameType.cs" />
+    <Compile Include="Record\Helper.cs" />
     <Compile Include="Record\KinectRecorder.cs" />
     <Compile Include="Record\KinectRecordOptions.cs" />
     <Compile Include="Record\SkeletonRecorder.cs" />

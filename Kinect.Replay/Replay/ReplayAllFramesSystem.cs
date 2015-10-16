@@ -30,11 +30,20 @@ namespace Kinect.Replay.Replay
 											 {
 												 foreach (var frame in frames)
 												 {
-													 Thread.Sleep(TimeSpan.FromMilliseconds(frame.TimeStamp));
-													 if (token.IsCancellationRequested)
-														 break;
-													 if (FrameReady != null)
-														 FrameReady(frame);
+                                                     while (true) { 
+													     Thread.Sleep(TimeSpan.FromMilliseconds(frame.TimeStamp));
+													     if (token.IsCancellationRequested)
+														     break;
+													     if (FrameReady != null)
+														     FrameReady(frame);
+                                                         if (!isPause) break;
+                                                         if (_nextFrame)
+                                                         {
+                                                             isPause = true;
+                                                             _nextFrame = false;
+                                                             break;
+                                                         }
+                                                     }
 												 }
 												 IsFinished = true;
 												 ReplayFinished.Raise();
@@ -47,6 +56,27 @@ namespace Kinect.Replay.Replay
 				return;
 			cancellationTokenSource.Cancel();
 		}
+
+        Boolean _nextFrame = false;
+
+        public void nextFrame()
+        {
+            if (!isPause)
+            {
+                isPause = true;                             
+            }
+            _nextFrame = true;    
+        }
+
+        private Boolean isPause = false;
+
+        public Boolean IsPause
+        {
+            get { return isPause; }
+            set { isPause = value; }
+        }
+        
+        
 
 		internal void AddFrames(BinaryReader reader)
 		{
