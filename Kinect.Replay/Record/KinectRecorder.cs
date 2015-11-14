@@ -5,7 +5,7 @@ using Microsoft.Kinect;
 
 namespace Kinect.Replay.Record
 {
-	public class KinectRecorder
+    public class KinectRecorder : IKinectRecorder
 	{
 		private Stream recordStream;
 		private string recordFileName;
@@ -120,5 +120,16 @@ namespace Kinect.Replay.Record
 			recordStream = null;
 		}
 
-	}
+
+        public bool isRecording
+        {
+            get { throw new NotImplementedException(); }
+        }
+
+
+        public String FileName
+        {
+            get { return recordFileName; }
+        }
+    }
 }

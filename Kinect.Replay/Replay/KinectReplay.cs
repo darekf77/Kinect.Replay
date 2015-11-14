@@ -8,7 +8,7 @@ using Microsoft.Kinect;
 
 namespace Kinect.Replay.Replay
 {
-	public class KinectReplay : IDisposable
+	public class KinectReplay : IKinectReplay, IDisposable
 	{
 		private BinaryReader reader;
 		private Stream stream;
@@ -104,5 +104,15 @@ namespace Kinect.Replay.Replay
 				stream = null;
 			}
 		}
-	}
+
+        public int DepthDataPixelLength
+        {
+            get { throw new NotImplementedException(); }
+        }
+
+        public int ColorDataPixelLength
+        {
+            get { throw new NotImplementedException(); }
+        }
+    }
 }
