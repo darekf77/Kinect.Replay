@@ -39,6 +39,7 @@ namespace Kinect.Replay.Replay
 
 		public KinectReplay(string fileName)
 		{
+            Started = false;
 			stream = File.OpenRead(fileName);
 			reader = new BinaryReader(stream);
 
@@ -61,12 +62,17 @@ namespace Kinect.Replay.Replay
 				if (File.Exists(audioFilePath))
 					AudioFilePath = audioFilePath;
 			}
+            
 		}
 
 		public void Start()
 		{
-			if (Started)
-				throw new Exception("KinectReplay already started");
+            if (Started)
+            {
+                Console.WriteLine("KinectReplay already started");
+
+                return;
+            }               
 
 			Started = true;
 
@@ -79,11 +85,14 @@ namespace Kinect.Replay.Replay
 
 		public void Stop()
 		{
-
+            
 			if (framesReplay != null)
 				framesReplay.Stop();
-
-			Started = false;
+            Started = false;
+			
+            framesReplay.FrameReady -= frame => synchronizationContext
+                     .Send(state => AllFramesReady.Raise(new ReplayAllFramesReadyEventArgs { AllFrames = frame }), null);
+            
 		}
 
 		public void Dispose()
@@ -105,14 +114,26 @@ namespace Kinect.Replay.Replay
 			}
 		}
 
+        //TODO make this dynamic
         public int DepthDataPixelLength
         {
-            get { throw new NotImplementedException(); }
+            get { return 307200; }
         }
 
         public int ColorDataPixelLength
         {
-            get { throw new NotImplementedException(); }
+            get { return 1228800; }
+        }
+
+
+        public int MaxDepth
+        {
+            get { return 4000; }
+        }
+
+        public int MinDepth
+        {
+            get { return 800; }
         }
     }
 }

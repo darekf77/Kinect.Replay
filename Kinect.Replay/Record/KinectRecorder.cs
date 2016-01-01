@@ -20,6 +20,7 @@ namespace Kinect.Replay.Record
 		private readonly AudioRecorder audioRecorder;
 
 		public KinectRecordOptions Options { get; set; }
+        private Boolean _IsRecording = false;
 
 		public KinectRecorder(KinectRecordOptions options, string targetFileName, KinectSensor sensor)
 		{
@@ -51,6 +52,7 @@ namespace Kinect.Replay.Record
 
 			previousFlushDate = DateTime.Now;
             Console.WriteLine("recording!");
+            _IsRecording = true;
 		}
 
 		public void Record(SkeletonFrame frame,KinectSensor psensor)
@@ -106,6 +108,7 @@ namespace Kinect.Replay.Record
 
 		public void Stop()
 		{
+            _IsRecording = false;
 			if (writer == null)
 				throw new Exception("This recorder is already stopped");
 
@@ -118,12 +121,13 @@ namespace Kinect.Replay.Record
 
 			recordStream.Dispose();
 			recordStream = null;
+            
 		}
 
 
         public bool isRecording
         {
-            get { throw new NotImplementedException(); }
+            get { return _IsRecording; }
         }
 
 

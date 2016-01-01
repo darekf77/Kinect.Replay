@@ -12,5 +12,7 @@ namespace Kinect.Replay.Replay
 	{
         int DepthDataPixelLength { get; }
         int ColorDataPixelLength { get; }
+        int MaxDepth {get;}
+        int MinDepth { get; }
 	}
 }
