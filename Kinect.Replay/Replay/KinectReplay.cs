@@ -89,7 +89,7 @@ namespace Kinect.Replay.Replay
 			if (framesReplay != null)
 				framesReplay.Stop();
             Started = false;
-			
+			if(framesReplay!=null)
             framesReplay.FrameReady -= frame => synchronizationContext
                      .Send(state => AllFramesReady.Raise(new ReplayAllFramesReadyEventArgs { AllFrames = frame }), null);
             

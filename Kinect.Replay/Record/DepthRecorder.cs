@@ -51,9 +51,18 @@ namespace Kinect.Replay.Record
                 shorts[i] = (short)this._tmpDepthPoints[i].Depth;
             }
 
-			writer.Write(shorts.Length);
-			foreach (var s in shorts)
-				writer.Write(s);
+			
+            try
+            {
+                writer.Write(shorts.Length);
+                foreach (var s in shorts)
+                    writer.Write(s);
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine(ex.Message);
+            }
+			
 		}
 	}
 }
